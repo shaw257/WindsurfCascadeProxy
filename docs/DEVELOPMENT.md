@@ -69,4 +69,4 @@ python .\tools\build_icon.py
 
 6. 在 GitHub Release 中上传 `dist\WindsurfCascadeProxy-v0.1.0.exe`。
 
-本项目不建议把 `dist/` 提交到仓库。
+
