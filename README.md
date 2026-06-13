@@ -6,7 +6,7 @@ Windsurf Cascade Proxy 是一个 Windows 桌面工具，用来把 Windsurf Casca
 
 > 本项目不是反向代理 Windsurf 内置模型，也不提供任何免费模型额度；它只是把 Windsurf Cascade 请求转发到用户自己配置的 API。
 
-当前仓库从 `v0.1.0` 作为首个公开版本发布。
+当前仓库从  `v0.1.0`  作为首个公开版本发布。
 
 ## 界面预览
 
