@@ -51,22 +51,4 @@ python .\tools\build_icon.py
 
 仓库已经包含生成好的 `.ico` 文件，普通构建不需要重新生成图标。
 
-## 发布流程
-
-1. 修改 `Program.cs` 里的 `AppVersion` 和文件顶部的 `AssemblyVersion` / `AssemblyFileVersion` / `AssemblyInformationalVersion`。
-2. 运行 `node --check .\windsurf-native-proxy.mjs`。
-3. 运行 `.\build-polished-exe.ps1 -OutputName WindsurfCascadeProxy-v0.1.0.exe`。
-4. 手动启动 EXE，检查：
-   - 程序能打开。
-   - 图标显示正常。
-   - 测试连接按钮可用。
-   - 启动和停止代理无异常。
-5. 检查 EXE 文件版本：
-
-```powershell
-(Get-Item .\dist\WindsurfCascadeProxy-v0.1.0.exe).VersionInfo | Select-Object FileVersion, ProductVersion, ProductName
-```
-
-6. 在 GitHub Release 中上传 `dist\WindsurfCascadeProxy-v0.1.0.exe`。
-
 
