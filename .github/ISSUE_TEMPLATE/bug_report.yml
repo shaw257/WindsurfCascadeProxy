@@ -1,0 +1,44 @@
+name: Bug report
+description: Report a reproducible problem
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please remove API keys, tokens, and private endpoint URLs before posting logs.
+  - type: input
+    id: version
+    attributes:
+      label: Program version
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: windsurf
+    attributes:
+      label: Windsurf version
+      placeholder: e.g. 1.x.x
+  - type: dropdown
+    id: interface
+    attributes:
+      label: Interface type
+      options:
+        - OpenAI Chat
+        - OpenAI Responses
+        - Anthropic Messages
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What did you do, and what happened?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs
+      description: Paste only logs with keys and private URLs removed.
