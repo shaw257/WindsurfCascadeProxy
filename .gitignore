@@ -1,0 +1,32 @@
+# Build output
+dist/
+release/
+bin/
+obj/
+
+# Local runtime and user config
+Runtime/
+*.log
+*.tmp
+*.bak
+windsurf-proxy-config.json
+windsurf-proxy.env
+
+# Dependency/cache folders
+node_modules/
+.vs/
+.vscode/
+.idea/
+tmp/
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Large local tools should not be committed
+tools/llvm/
+tools/llvm-mingw/
+tools/7zip-extra/
+tools/cargo-xwin/
+tools/7zr.exe
