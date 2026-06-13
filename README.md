@@ -1,8 +1,8 @@
 # Windsurf Cascade Proxy
 
-Windsurf Cascade Proxy 是一个 Windows 桌面工具，用来把 Windsurf Cascade 的原生请求转发到你自己的上游模型接口。
+Windsurf Cascade Proxy 是一个 Windows 桌面工具，用来把 Windsurf Cascade 的模型请求转发到你自己的上游模型接口。
 
-它适合这样的场景：你想在 Windsurf 的原生 Cascade 体验里，使用 OpenAI Responses / Chat、OpenAI 兼容中转站、DeepSeek 官方 API，或者 Anthropic Messages 兼容接口。
+它适合这样的场景：你想在 Windsurf 的原生 Cascade 体验里，使用你自己从第三方购买的模型 API。
 
 > 本项目不是反向代理 Windsurf 内置模型，也不提供任何免费模型额度；它只是把 Windsurf Cascade 请求转发到用户自己配置的 API。
 
