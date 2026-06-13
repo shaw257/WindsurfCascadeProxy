@@ -17,7 +17,7 @@ Windsurf Cascade Proxy 是一个 Windows 桌面工具，用来把 Windsurf Casca
 - 图形界面配置上游地址、API Key、默认模型和本地端口。
 - 支持 OpenAI Chat、OpenAI Responses、Anthropic Messages 三种接口类型。
 - 支持按 Windsurf 内部模型 ID 配置模型路由。
-- 支持 OpenAI 官方 API、OpenAI 兼容中转站、DeepSeek 官方 API 与 Anthropic 兼容接口。
+- 支持 OpenAI / Anthropic 兼容的 API 接口。
 - 支持测试连接、拉取模型列表、从日志发现 Windsurf 模型 ID。
 - 支持安装 / 恢复 Windsurf 本地补丁。
 - 支持系统托盘、后台代理状态检查和运行日志查看。
@@ -36,7 +36,7 @@ Windsurf Cascade Proxy 是一个 Windows 桌面工具，用来把 Windsurf Casca
 ```text
 Windsurf Cascade
     -> 本机代理 127.0.0.1:3009
-    -> OpenAI / OpenAI-compatible / DeepSeek / Anthropic-compatible API
+    -> OpenAI / OpenAI-compatible / Anthropic-compatible API
 ```
 
 ## 系统要求
@@ -67,7 +67,7 @@ Windsurf 更新可能会改变 Cascade 相关的本地文件结构。如果更�
 4. 点击“测试连接”，确认上游可用。
 5. 点击“安装补丁”。
 6. 点击“启动代理”或“启动并打开 Windsurf”。
-7. 在 Windsurf 里选择 BYOK / Claude 相关模型并发送消息。
+7. 在 Windsurf 里选择任意模型并发送消息。
 
 更详细的说明见 [docs/USAGE.md](docs/USAGE.md)。
 
@@ -100,7 +100,7 @@ Windsurf 更新可能会改变 Cascade 相关的本地文件结构。如果更�
 - `Runtime\windsurf-proxy.stderr.log`：代理错误日志。
 - `Runtime\windsurf-proxy-config.json`：本地配置文件。
 
-API Key 当前按明文保存在本机配置文件里，请不要把配置文件上传到 GitHub。
+API Key 当前按明文保存在本机配置文件里，不会进行上传，请注意不要泄露配置文件。
 
 ## 构建
 
@@ -128,7 +128,7 @@ dist\WindsurfCascadeProxy.exe
 
 这个工具会修改本机 Windsurf 安装目录中的部分脚本，以便把 Cascade 请求指向本机代理。程序提供“恢复补丁”按钮，但 Windsurf 更新后仍建议重新检查补丁状态。
 
-本项目与 Windsurf、Codeium、OpenAI、Anthropic、DeepSeek 没有关联，也不是官方项目。
+本项目与 Windsurf、Codeium、OpenAI、Anthropic 没有关联，也不是官方项目。
 
 ## 常见问题
 
