@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check proxy syntax
+        run: node --check .\windsurf-native-proxy.mjs
+
+      - name: Build EXE
+        shell: pwsh
+        run: .\build-polished-exe.ps1
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WindsurfCascadeProxy
+          path: dist/WindsurfCascadeProxy.exe
