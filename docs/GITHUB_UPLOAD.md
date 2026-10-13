@@ -19,7 +19,7 @@
 
 创建 GitHub Release，标签填写 `v0.2.0`，标题建议 `Windsurf Cascade Proxy v0.2.0`。
 
-上传本地 `release/` 内的安装包 `Windsurf Cascade Proxy_0.2.0_x64-setup.exe` 和 `SHA256SUMS.txt`，把 `RELEASE_NOTES-v0.2.0.md` 的正文放入 Release 描述。不生成 ZIP。
+上传整理后的 Release 目录内的安装包 `Windsurf.Cascade.Proxy_0.2.0_x64-setup.exe` 和 `SHA256SUMS.txt`，把 `RELEASE_NOTES-v0.2.0.md` 的正文放入 Release 描述。不生成 ZIP。GitHub 会规范化文件名，因此校验文件必须使用附件的最终名称；Tauri 构建原始文件名中的空格已在发布副本中改为点。
 
 面向普通用户只提供安装包即可。不要把开发用的单独 EXE 作为“独立单文件版”发布，它依赖同目录的 `proxy-core/` 资源。
 

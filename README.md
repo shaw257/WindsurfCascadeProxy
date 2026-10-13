@@ -6,7 +6,7 @@
 
 ## 下载与运行
 
-在 GitHub Releases 下载 `Windsurf Cascade Proxy_0.2.0_x64-setup.exe`，安装后从开始菜单打开。
+在 GitHub Releases 下载 `Windsurf.Cascade.Proxy_0.2.0_x64-setup.exe`，安装后从开始菜单打开。
 
 - 当前发布 Windows x64 版，需要 Windows 10/11、Windsurf 和系统 Node.js 20+。
 - 用户不需要安装 Rust，也不需要下载源码或手工准备代理脚本。
