@@ -1,27 +1,20 @@
-# Security Policy
+# 安全说明
 
-## Supported Versions
+## 数据与权限
 
-Only the latest GitHub release is maintained.
+- API 密钥明文保存在用户应用数据目录，配置备份和损坏副本也可能包含密钥。不要上传这些文件。
+- Windows 使用用户应用数据目录的继承权限，并不防御同一用户下的恶意程序；Unix 新建配置文件使用 `0600` 权限。
+- 代理只监听 `127.0.0.1`。管理接口使用每次启动随机生成的控制令牌，只停止本程序管理的进程。
+- 代理校验本机 Host 和请求 Origin，拒绝不可信网页的跨站访问和非回环 Host；这不是对同一用户下恶意本机程序的防御。
+- 连接测试、模型列表、运行日志和诊断包会过滤已配置密钥及常见认证头。但模型名、接口地址、本机路径和业务错误仍可能敏感，分享前需人工检查。
+- 真实 Cascade 不默认保存完整对话请求或响应。
 
-## API Key Storage
+## 补丁边界
 
-Current versions store API keys in plaintext local configuration files under:
+接管原生 Cascade 需要修改 Windsurf 扩展及校验项。安装或恢复前必须先完全退出 Windsurf。程序只修改已识别的构建，并保留原始文件备份；遇到更新、哈希变化或第三方修改时拒绝使用旧备份覆盖。
 
-```text
-%LOCALAPPDATA%\WindsurfCascadeProxy\
-```
+macOS 实现尚未完成实机验收，修改签名应用存在额外风险，本次不发布 macOS 正式安装包。默认构建禁用 macOS 补丁安装与恢复；源码保留的实验性 Cargo feature 不属于发布支持范围。
 
-Do not share this directory publicly.
+## 报告问题
 
-## Reporting a Vulnerability
-
-If you find a security issue, please open a GitHub issue with minimal reproduction details.
-
-Do not include real API keys, account tokens, or private endpoint URLs in public issues.
-
-## Scope
-
-This project is an unofficial local proxy tool. It only listens on `127.0.0.1` by design.
-
-Users are responsible for complying with the terms of Windsurf and their upstream model providers.
+发现疑似密钥泄漏或安全问题时，不要在公开 Issue 中贴出密钥、完整配置、对话或未检查的诊断包。先使用 GitHub 私密漏洞报告（仓库启用后），或联系仓库维护者。误公开真实密钥时应及时在对应上游撤销并更换。

@@ -1,31 +1,15 @@
-# Contributing
+# 参与贡献
 
-Thanks for considering contributing.
+当前主线是 Tauri v0.2.0；旧 WinForms 版保留在 v0.1.0 标签和 Release 中。
 
-This project is intentionally small and practical. Good contributions usually fall into one of these categories:
+## 问题反馈
 
-- Fix a reproducible bug.
-- Improve compatibility with a specific Windsurf version.
-- Improve OpenAI-compatible or Anthropic-compatible request handling.
-- Improve documentation or troubleshooting.
-- Improve UI wording without changing behavior.
+请提供 Windows、Windsurf 和程序版本、接口类型、复现步骤及脱敏日志。不要上传 API 密钥、令牌、个人配置或未检查的诊断包。
 
-## Before Opening an Issue
+补丁兼容问题需要准确的 Windsurf 构建信息；不要通过放宽哈希检查来支持未知版本。
 
-Please include:
+## 开发
 
-- Windows version.
-- Windsurf version.
-- Program version.
-- Interface type: OpenAI Chat, OpenAI Responses, or Anthropic Messages.
-- Sanitized error logs.
+环境准备和构建步骤见 [README](README.md#开发与构建)。提交前运行 Node 测试、前端构建和 Rust 单元测试。
 
-Do not include API keys.
-
-## Development
-
-See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
-
-## Pull Requests
-
-Keep pull requests focused. Avoid mixing UI redesign, proxy logic, and documentation changes in one PR unless they are tightly related.
+修改请保持聚焦，避免将无关的界面调整、协议转换和文档修改混入同一提交。涉及密钥处理、补丁恢复或进程管理时，请补充相应回归测试。

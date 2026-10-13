@@ -1,32 +1,23 @@
-# Build output
-dist/
-release/
-bin/
-obj/
-
-# Local runtime and user config
-Runtime/
+node_modules/
+apps/desktop/dist/
+apps/desktop/src-tauri/target/
+apps/desktop/src-tauri/resources/runtime/
+tmp/
+tools/
 *.log
 *.tmp
-*.bak
-windsurf-proxy-config.json
-windsurf-proxy.env
-
-# Dependency/cache folders
-node_modules/
-.vs/
-.vscode/
-.idea/
-tmp/
-
-# OS files
-Thumbs.db
-Desktop.ini
 .DS_Store
-
-# Large local tools should not be committed
-tools/llvm/
-tools/llvm-mingw/
-tools/7zip-extra/
-tools/cargo-xwin/
-tools/7zr.exe
+release/
+apps/desktop/src-tauri/gen/
+*.tsbuildinfo
+*.exe
+*.dmg
+*.pdb
+*.bak
+*.native-proxy-bak
+*.corrupt-*
+config.json
+windsurf-proxy-config.json
+.env
+.env.*
+!.env.example

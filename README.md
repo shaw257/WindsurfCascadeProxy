@@ -1,139 +1,76 @@
-# Windsurf Cascade Proxy
+# Windsurf Cascade Proxy v0.2.0
 
-Windsurf Cascade Proxy 是一个 Windows 桌面工具，用来把 Windsurf Cascade 的模型请求转发到你自己的上游模型接口。
+通过本机代理，把 Windsurf 原生 Cascade 请求接入自己的上游 API。桌面界面使用 Tauri 2、React 和 TypeScript，原生后端使用 Rust，代理核心使用 Node.js。
 
-它适合这样的场景：你想在 Windsurf 的原生 Cascade 体验里，使用你自己从第三方购买的模型 API。
+这是旧 WinForms 公开版 v0.1.0 之后的新桌面主线；旧版代码和配置不包含在此项目内，也不自动导入旧版配置。此前 Tauri 开发版内部使用的 `0.5.0` 统一改为公开版本 `0.2.0`。
 
-> 本项目不是反向代理 Windsurf 内置模型，也不提供任何免费模型额度；它只是把 Windsurf Cascade 请求转发到用户自己配置的 API。
+## 下载与运行
 
-当前仓库从  `v0.1.0`  作为首个公开版本发布。
+在 GitHub Releases 下载 `Windsurf Cascade Proxy_0.2.0_x64-setup.exe`，安装后从开始菜单打开。
 
-## 界面预览
+- 当前发布 Windows x64 版，需要 Windows 10/11、Windsurf 和系统 Node.js 20+。
+- 用户不需要安装 Rust，也不需要下载源码或手工准备代理脚本。
+- 单独运行开发目录内的 EXE 时，需要把同目录的 `proxy-core/` 一起保留；安装包会自动安装这些资源。
+- 当前安装包未做代码签名，系统可能显示未知发布者。下载后可与 Release 中的 SHA-256 校验值比对。
+- macOS 后端代码仍是实验性实现，尚无实机验收和正式 DMG；默认构建禁用 macOS 补丁安装及恢复，当前版本不承诺可用。
 
-<img src="assets/app-screenshot.png" alt="Windsurf Cascade Proxy main window" width="900">
+## 主要功能
 
-## 功能特性
+- 可复用的上游连接：接口地址、API 密钥、默认模型和思考设置。
+- OpenAI Chat、OpenAI Responses、Anthropic Messages 兼容接口。
+- Windsurf 模型 ID 路由，分别指定连接、模型和思考参数。
+- 测试连接、从上游拉取并缓存模型、测试单条路由。
+- 上游拒绝思考参数时移除参数并重试一次。
+- 环境诊断、启动前检查、补丁安装和恢复。
+- 摘要及原始运行日志、日志轮转、脱敏诊断包。
+- 单实例、系统托盘，明确退出时停止本程序启动的代理。
 
-- 图形界面配置上游地址、API Key、默认模型和本地端口。
-- 支持 OpenAI Chat、OpenAI Responses、Anthropic Messages 三种接口类型。
-- 支持按 Windsurf 内部模型 ID 配置模型路由。
-- 支持 OpenAI / Anthropic 兼容的 API 接口。
-- 支持测试连接、拉取模型列表、从日志发现 Windsurf 模型 ID。
-- 支持安装 / 恢复 Windsurf 本地补丁。
-- 支持系统托盘、后台代理状态检查和运行日志查看。
-- 支持推理 / 思考强度参数，并在上游不支持时自动降级重试。
+## 首次设置
 
-## 工作原理
+1. 在环境诊断中检查 Node.js 和 Windsurf 路径。
+2. 在连接管理中填写接口地址、API 密钥和模型，先测试连接。拉取模型列表不需要先填写模型名。
+3. 按需要添加模型路由。没有匹配路由时使用默认连接和默认模型。
+4. 完全退出 Windsurf，再安装接管补丁，最后启动代理并打开 Windsurf。
 
-程序会做三件事：
+本地端口默认是 `3009`，只监听 `127.0.0.1`。端口被占用时可在环境诊断中修改，不会自动结束其他程序。改端口后需要重新安装补丁并重启代理和 Windsurf。
 
-1. 在本机启动一个只监听 `127.0.0.1` 的 Node.js 代理服务。
-2. 给 Windsurf 安装本地补丁，让 Cascade 请求转发到本机代理。
-3. 代理根据配置把请求转换并转发到你的上游 API。
+补丁只允许 `packages/proxy-core/known-windsurf-builds.json` 中明确核验的版本、提交和扩展文件 SHA-256。当前规则记录了 Windsurf `1.110.1` 的一个 Windows 构建，并不意味着所有同名版本都兼容。更新后如哈希不同，程序会拒绝修改，不会用旧备份覆盖新版本。卸载本程序前建议先恢复补丁。
 
-简化流程：
+## 配置与日志
 
-```text
-Windsurf Cascade
-    -> 本机代理 127.0.0.1:3009
-    -> OpenAI / OpenAI-compatible / Anthropic-compatible API
-```
+Windows 用户数据目录为 `%APPDATA%\cn.windsurf-cascade.proxy\`，具体路径以环境诊断页为准。
 
-## 系统要求
+API 密钥按产品约定明文保存。配置原子替换，保留上一份有效的 `config.json.bak`；当前配置损坏且备份有效时会自动恢复，并保留损坏副本。无法恢复时显示错误，不会静默清空配置。
 
-- Windows 10 / Windows 11
-- Windsurf
-- Node.js 18 或更高版本
-- 可用的上游 API Key
+测试连接日志保留脱敏后的请求和响应。真实 Cascade 默认记录请求摘要，不保存完整对话上下文。诊断包仍可能包含接口地址、模型名和本机路径，分享前请检查。详见 [安全说明](SECURITY.md)。
 
-程序本体是单个 EXE，但代理运行依赖系统中的 Node.js。
+## 开发与构建
 
-## 已测试环境
-
-`v0.1.0` 已在 Windsurf Windows x64 `2.3.9` 上测试。
-
-Windsurf 更新可能会改变 Cascade 相关的本地文件结构。如果更新后消息无法发送，建议先在本工具中恢复补丁，再重新安装补丁并重启 Windsurf。
-
-## 快速开始
-
-1. 下载 Release 里的 `WindsurfCascadeProxy-v0.1.0.exe`。
-2. 启动程序。
-3. 在“连接配置”里填写：
-   - 服务商模板：`OpenAI 格式`
-   - 接口地址，例如 `https://api.openai.com/v1`
-   - API 密钥
-   - 默认模型，例如 `gpt-5.5`
-   - 接口类型，例如 `OpenAI Responses`
-4. 点击“测试连接”，确认上游可用。
-5. 点击“安装补丁”。
-6. 点击“启动代理”或“启动并打开 Windsurf”。
-7. 在 Windsurf 里选择任意模型并发送消息。
-
-更详细的说明见 [docs/USAGE.md](docs/USAGE.md)。
-
-## 模型路由
-
-模型路由用于把 Windsurf 内部模型 ID 映射到不同上游模型。
-
-例如：
-
-| Windsurf 模型 ID | 上游模型 | 接口类型 |
-| --- | --- | --- |
-| `MODEL_CLAUDE_4_SONNET_THINKING_BYOK` | `gpt-5.5` | OpenAI Responses |
-| `MODEL_CLAUDE_4_OPUS_THINKING_BYOK` | `claude-sonnet-4-5` | Anthropic Messages |
-| `swe-1-6` | `gpt-5.1` | OpenAI Responses |
-
-如果某个 Windsurf 模型 ID 没有命中路由，会走“连接配置”里的默认上游。
-
-## 配置和日志位置
-
-程序运行数据保存在：
-
-```text
-%LOCALAPPDATA%\WindsurfCascadeProxy\
-```
-
-主要文件：
-
-- `WindsurfCascadeProxy.log`：应用运行日志。
-- `Runtime\windsurf-proxy.stdout.log`：代理标准输出日志。
-- `Runtime\windsurf-proxy.stderr.log`：代理错误日志。
-- `Runtime\windsurf-proxy-config.json`：本地配置文件。
-
-API Key 当前按明文保存在本机配置文件里，不会进行上传，请注意不要泄露配置文件。
-
-## 构建
-
-在 Windows PowerShell 中运行：
+构建环境使用 Node.js 24、Rust stable。Windows 还需要 Visual Studio 2022 Build Tools 的“使用 C++ 的桌面开发”组件和 WebView2。
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build-polished-exe.ps1
+npm ci
+npm test
+npm run build
+cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml --locked --lib
+npm run tauri -- build --bundles nsis
 ```
 
-输出文件：
+完整桌面开发运行 `npm run tauri -- dev`。仅预览前端运行 `npm run dev`，浏览器访问 `http://127.0.0.1:1420`；浏览器模式使用模拟数据，不会执行补丁或启动真实代理。
+
+NSIS 构建输出位于 `apps/desktop/src-tauri/target/release/bundle/nsis/`。显式指定 Rust target 时，位于对应的 `target/<target>/release/bundle/nsis/`。
+
+## 项目目录
 
 ```text
-dist\WindsurfCascadeProxy.exe
+apps/desktop/src/             React 界面
+apps/desktop/src-tauri/       Rust 后端、Tauri 配置和图标
+packages/proxy-core/         Node 代理、上游测试、补丁规则
+packages/proxy-core/test/    本地模拟接口和补丁样本测试
+docs/                       上传说明和本轮审查记录
+release/                    本地发布文件，不加入源码仓库
 ```
 
-构建要求：
+查看 [更新记录](CHANGELOG.md)、[GitHub 上传说明](docs/GITHUB_UPLOAD.md) 和 [代码审查记录](docs/REVIEW-v0.2.0.md)。
 
-- Windows
-- .NET Framework 编译器 `csc.exe`
-- Node.js 用于检查代理脚本
-
-详细说明见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。
-
-## 风险说明
-
-这个工具会修改本机 Windsurf 安装目录中的部分脚本，以便把 Cascade 请求指向本机代理。程序提供“恢复补丁”按钮，但 Windsurf 更新后仍建议重新检查补丁状态。
-
-本项目与 Windsurf、Codeium、OpenAI、Anthropic 没有关联，也不是官方项目。
-
-## 常见问题
-
-见 [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)。
-
-## 许可证
-
-本项目使用 MIT License，见 [LICENSE](LICENSE)。
+本项目与 Windsurf、OpenAI、Anthropic 等厂商无隶属关系；不包含 Windsurf 原厂程序、其他软件的 EXE 或逆向研究资料。

@@ -1,0 +1,10 @@
+{
+  "builds": [
+    {
+      "platform": "windows",
+      "version": "1.110.1",
+      "commit": "a5d3f1ff990cabc0e8001cce6642bdb7ad429e73",
+      "extensionSha256": "101caa7d30fd4e52057682719ed4be8ba2f19cef4ffbdde75b6c66b530198ad6"
+    }
+  ]
+}
